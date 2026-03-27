@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobGuard - Fraud Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-mark">JG</div>
+        <div>
+          <p class="eyebrow">Fraud Detection Studio</p>
+          <h1 class="brand-title">JobGuard</h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">
+          <span id="themeIcon">Moon</span>
+        </button>
+        <div class="status-pill" id="draftStatus">Draft not saved</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Smarter review for job offers</p>
+        <h2>Check suspicious offers before they ask for money, documents, or blind trust.</h2>
+        <p class="hero-sub">This analyzer scores job postings across multiple scam signals, tracks risky patterns in the description, and gives you a verification checklist before you respond.</p>
+      </div>
+      <div class="hero-panel">
+        <div class="mini-card">
+          <span class="mini-label">Preview risk</span>
+          <strong id="previewRisk">Low</strong>
+        </div>
+        <div class="mini-card">
+          <span class="mini-label">Selected flags</span>
+          <strong id="liveFlagCount">0</strong>
+        </div>
+        <div class="mini-card">
+          <span class="mini-label">Saved analyses</span>
+          <strong id="historyCount">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <button type="button" class="ghost-btn" id="loadSuspiciousBtn">Load suspicious sample</button>
+      <button type="button" class="ghost-btn" id="loadLegitBtn">Load legit sample</button>
+      <button type="button" class="ghost-btn" id="saveDraftBtn">Save draft</button>
+      <button type="button" class="ghost-btn" id="clearDraftBtn">Clear draft</button>
+    </section>
+
+    <main class="content-grid">
+      <section class="panel form-panel" id="inputCard">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Input</p>
+            <h3>Analyze a job posting</h3>
+          </div>
+          <div class="step-chip">Step 1</div>
+        </div>
+
+        <form id="jobForm">
+          <div class="row">
+            <label class="field">
+              <span>Job title</span>
+              <input type="text" id="jobTitle" placeholder="e.g. Senior Data Analyst">
+            </label>
+            <label class="field">
+              <span>Company name</span>
+              <input type="text" id="company" placeholder="e.g. TechCorp Inc.">
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span>Salary offered</span>
+              <input type="text" id="salary" placeholder="e.g. Rs 5,00,000/yr or $100k/mo">
+            </label>
+            <label class="field">
+              <span>Contact email</span>
+              <input type="email" id="email" placeholder="e.g. hr@company.com">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Full job description</span>
+            <textarea id="description" placeholder="Paste the full job description, recruiter message, benefits, and application process here."></textarea>
+            <div class="field-note">
+              <span id="descriptionCount">0 characters</span>
+              <span id="descriptionHint">Short descriptions are harder to verify.</span>
+            </div>
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span>Job source</span>
+              <select id="source">
+                <option value="">Select source</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="naukri">Naukri.com</option>
+                <option value="indeed">Indeed</option>
+                <option value="email">Direct Email</option>
+                <option value="whatsapp">WhatsApp / Telegram</option>
+                <option value="sms">SMS</option>
+                <option value="website">Company Website</option>
+                <option value="other">Other / Unknown</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Experience required</span>
+              <select id="experience">
+                <option value="">Select experience</option>
+                <option value="fresher">Fresher / 0-1 yr</option>
+                <option value="junior">Junior (1-3 yr)</option>
+                <option value="mid">Mid-level (3-6 yr)</option>
+                <option value="senior">Senior (6+ yr)</option>
+                <option value="any">Any / Not Mentioned</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="subsection-head">
+            <div>
+              <p class="eyebrow">Manual checks</p>
+              <h4>Suspicious red flags</h4>
+            </div>
+            <span class="mini-tag">Select all that apply</span>
+          </div>
+
+          <div class="checkboxes" id="flagChecks" aria-label="Suspicious red flags">
+            <label class="check-item">
+              <input type="checkbox" value="upfront_payment">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Asked for upfront payment or registration fee</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="personal_docs">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Requested Aadhaar, passport, or bank docs before interview</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="no_interview">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Hired without any interview or skill test</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="too_good">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Salary seems unrealistically high</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="gmail_email">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Recruiter uses Gmail, Yahoo, or another free email</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="work_from_home">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Remote role promises very high pay for simple work</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="urgency">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Pressure tactics like "apply in 24 hours"</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="vague_role">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Job responsibilities are vague or inconsistent</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="poor_grammar">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">Posting has poor grammar or obvious spelling errors</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" value="no_company_info">
+              <span class="check-box" aria-hidden="true"></span>
+              <span class="check-copy">No verifiable company info or website</span>
+            </label>
+          </div>
+
+          <div class="action-row">
+            <button type="submit" class="primary-btn" id="analyzeBtn">
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-text">Analyze job offer</span>
+            </button>
+            <button type="button" class="secondary-btn" id="resetFormBtn">Reset form</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="side-column">
+        <section class="panel helper-panel">
+          <div class="panel-head compact">
+            <div>
+              <p class="eyebrow">Live assistant</p>
+              <h3>Quick insights</h3>
+            </div>
+          </div>
+          <div class="insight-stack">
+            <div class="insight-card">
+              <span class="mini-label">Description quality</span>
+              <strong id="descriptionQuality">Needs more detail</strong>
+              <p id="descriptionAdvice">Add recruiter process, company details, and role responsibilities.</p>
+            </div>
+            <div class="insight-card">
+              <span class="mini-label">Email check</span>
+              <strong id="emailAdviceTitle">No email added</strong>
+              <p id="emailAdviceText">A corporate domain usually lowers impersonation risk.</p>
+            </div>
+            <div class="insight-card">
+              <span class="mini-label">Source check</span>
+              <strong id="sourceAdviceTitle">No source selected</strong>
+              <p id="sourceAdviceText">Unofficial channels like WhatsApp and SMS are much riskier.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel history-panel">
+          <div class="panel-head compact">
+            <div>
+              <p class="eyebrow">Recent results</p>
+              <h3>Analysis history</h3>
+            </div>
+          </div>
+          <div id="historyList" class="history-list">
+            <p class="empty-state">No saved analysis yet.</p>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <section id="results" class="results-panel" aria-live="polite"></section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
