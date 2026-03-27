@@ -93,18 +93,9 @@ Open the `index.html` file in your browser.
 
 ## 📸 Screenshots
 
-Add your application screenshots below.
-
-```
-<img width="1586" height="847" alt="image" src="https://github.com/user-attachments/assets/f2e4ed9a-b79e-4eee-b3ea-6ab4a35bb688" />
-
-```
-
-You can include multiple screenshots such as:
-
-* Home Page
-* Job Verification Result
-* Warning Message
+<p align="center">
+  <img width="1586" height="847" alt="JobGuard UI" src="https://github.com/user-attachments/assets/f2e4ed9a-b79e-4eee-b3ea-6ab4a35bb688" />
+</p>
 
 ---
 
